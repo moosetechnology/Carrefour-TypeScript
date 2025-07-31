@@ -31,15 +31,15 @@ BaselineOfCarrefourTypeScript >> customProjectAttributes [
 { #category : 'baselines' }
 BaselineOfCarrefourTypeScript >> defineDependencies: spec [
 
-spec baseline: 'FASTTypescript' with: [
+spec baseline: 'FASTTypeScript' with: [
 		spec
 			loads: #( 'default' );
-			repository: 'github://moosetechnology/FASTTypescript' ].
+			repository: 'github://moosetechnology/FASTTypescript:main' ].
 		
 spec baseline: 'FamixTypeScript' with: [
 		spec
 			loads: #( 'default' );
-			repository: 'github://fuhrmanator/FamixTypeScript/src' ].
+			repository: 'github://fuhrmanator/FamixTypeScript:master/src' ].
 	
 ]
 
