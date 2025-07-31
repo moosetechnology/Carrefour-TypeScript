@@ -1,18 +1,18 @@
-Extension { #name : 'FASTTypeScriptMethodDefinition' }
+Extension { #name : 'FASTTypeScriptFunctionDeclaration' }
 
 { #category : '*Carrefour-TypeScript-Model-accessing' }
-FASTTypeScriptMethodDefinition >> famix [
-	"Relation named: #famix type: #FamixTypeScriptMethod opposite: #fast"
+FASTTypeScriptFunctionDeclaration >> famix [
+	"Relation named: #famix type: #FamixTypeScriptFunction opposite: #fast"
 
 	<generated>
 	<derived>
-	<FMProperty: #famix type: #FamixTypeScriptMethod opposite: #fast>
+	<FMProperty: #famix type: #FamixTypeScriptFunction opposite: #fast>
 	<package: #'Carrefour-TypeScript-Model'>
 	^ self attributeAt: #famix ifAbsent: [ nil ]
 ]
 
 { #category : '*Carrefour-TypeScript-Model-accessing' }
-FASTTypeScriptMethodDefinition >> famix: anObject [
+FASTTypeScriptFunctionDeclaration >> famix: anObject [
 
 	<generated>
 	(self attributeAt: #famix ifAbsentPut: [nil]) == anObject ifTrue: [ ^ anObject ].

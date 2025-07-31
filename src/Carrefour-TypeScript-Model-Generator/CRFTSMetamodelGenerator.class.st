@@ -2,8 +2,8 @@ Class {
 	#name : 'CRFTSMetamodelGenerator',
 	#superclass : 'FamixMetamodelGenerator',
 	#instVars : [
-		'famixMethod',
-		'fastMethod'
+		'famixFunction',
+		'fastFunctionDeclaration'
 	],
 	#category : 'Carrefour-TypeScript-Model-Generator',
 	#package : 'Carrefour-TypeScript-Model-Generator'
@@ -33,11 +33,11 @@ CRFTSMetamodelGenerator >> defineClasses [
 
 	super defineClasses.
 
-	famixMethod := self
-		               remoteEntity: #Method
+	famixFunction := self
+		               remoteEntity: #Function
 		               withPrefix: #FamixTypeScript.
-	fastMethod := self
-		               remoteEntity: #MethodDefinition
+	fastFunctionDeclaration := self
+		               remoteEntity: #FunctionDeclaration
 		               withPrefix: #FASTTypeScript.
 
 	
@@ -48,5 +48,5 @@ CRFTSMetamodelGenerator >> defineRelations [
 
 	super defineRelations.
 
-	(famixMethod property: #fast) - (fastMethod property: #famix).
+	(famixFunction property: #fast) - (fastFunctionDeclaration property: #famix).
 ]
