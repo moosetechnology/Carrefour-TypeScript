@@ -1,8 +1,8 @@
 Class {
 	#name : 'CRFTSModel',
 	#superclass : 'MooseModel',
-	#traits : 'FASTTEntityCreator + FamixTypeScriptTEntityCreator',
-	#classTraits : 'FASTTEntityCreator classTrait + FamixTypeScriptTEntityCreator classTrait',
+	#traits : 'FASTTEntityCreator + FASTTypeScriptTEntityCreator + FamixTypeScriptTEntityCreator',
+	#classTraits : 'FASTTEntityCreator classTrait + FASTTypeScriptTEntityCreator classTrait + FamixTypeScriptTEntityCreator classTrait',
 	#category : 'Carrefour-TypeScript-Model-Model',
 	#package : 'Carrefour-TypeScript-Model',
 	#tag : 'Model'
