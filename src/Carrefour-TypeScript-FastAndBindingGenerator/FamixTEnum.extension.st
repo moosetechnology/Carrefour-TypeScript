@@ -1,12 +1,12 @@
-Extension { #name : 'FamixTClass' }
+Extension { #name : 'FamixTEnum' }
 
 { #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
-FamixTClass >> bindFastModel: fastModel usingBinder: binder [
-	binder bindFastModel: fastModel fromFamixClassEntity: self 
+FamixTEnum >> bindFastModel: fastModel usingBinder: binder [
+	binder bindFastModel: fastModel fromFamixEnumEntity: self 
 ]
 
 { #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
-FamixTClass >> generateFastAndBind [
+FamixTEnum >> generateFastAndBind [
 
 	| fastModel |
 	self assert: self sourceAnchor isNotNil.
@@ -15,10 +15,11 @@ FamixTClass >> generateFastAndBind [
 		             yourself.
 	self bindFastModel: fastModel usingBinder: CRFTSBinderVisitor new.
 	^ fastModel
+	
+
 ]
 
 { #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
-FamixTClass >> getFASTModel [
-
+FamixTEnum >> getFASTModel [
 	^ FASTTypeScriptParser new parse: self sourceAnchor sourceText
 ]

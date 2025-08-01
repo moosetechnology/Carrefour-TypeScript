@@ -20,6 +20,17 @@ CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixClassEntity: aFamixClass
 ]
 
 { #category : 'as yet unclassified' }
+CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixEnumEntity: aFamixEnumEntity [
+	self
+		execute: [ self sourceFamixEntity: aFamixEnumEntity.
+			fastModel allFASTTypeScriptEnumDeclaration 
+				"In Java there is a check here to see if there is a parent for the function; I don't see whe we need it here."
+				 do: [ :enumDeclaration | self accept: enumDeclaration ]. 
+			fastModel metamodel: CRFTSModel metamodel ]
+		recordedAs: 'Bind ' , aFamixEnumEntity mooseName printString
+]
+
+{ #category : 'as yet unclassified' }
 CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixFunctionEntity: aFamixFunctionEntity [
 	self
 		execute: [ self sourceFamixEntity: aFamixFunctionEntity.
@@ -49,6 +60,17 @@ CRFTSBinderVisitor >> visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassD
 	For example check Java"
 
 	self sourceFamixEntity fast: aFASTTypeScriptClassDeclaration.
+	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
+	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
+]
+
+{ #category : 'visiting' }
+CRFTSBinderVisitor >> visitFASTTypeScriptEnumDeclaration: aFASTTypeScriptEnumDeclaration [
+  
+	"check if something on top pf it? Normally there is Program.
+	For example check Java"
+
+	self sourceFamixEntity fast: aFASTTypeScriptEnumDeclaration.
 	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
 	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
 ]
