@@ -1,14 +1,15 @@
-Extension { #name : 'FamixTFunction' }
+Extension { #name : 'FamixTClass' }
 
 { #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
-FamixTFunction >> bindFastModel: fastModel usingBinder: binder [
-	binder bindFastModel: fastModel fromFamixFunctionEntity: self 
+FamixTClass >> bindFastModel: fastModel usingBinder: binder [
+	binder bindFastModel: fastModel fromFamixClassEntity: self 
 ]
 
 { #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
-FamixTFunction >> generateFastAndBind [
+FamixTClass >> generateFastAndBind [
 
 	| fastModel |
+	self halt.
 	self assert: self sourceAnchor isNotNil.
 	fastModel := self getFASTModel
 		             metamodel: CRFTSModel metamodel;
@@ -18,6 +19,7 @@ FamixTFunction >> generateFastAndBind [
 ]
 
 { #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
-FamixTFunction >> getFASTModel [
+FamixTClass >> getFASTModel [
+
 	^ FASTTypeScriptParser new parse: self sourceAnchor sourceText
 ]

@@ -9,14 +9,23 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixClassEntity: aFamixClassEntity [
+	self
+		execute: [ self sourceFamixEntity: aFamixClassEntity.
+			fastModel allFASTTypeScriptClassDeclaration
+				"In Java there is a check here to see if there is a parent for the function; I don't see whe we need it here."
+				 do: [ :classDeclaration | self accept: classDeclaration ]. 
+			fastModel metamodel: CRFTSModel metamodel ]
+		recordedAs: 'Bind ' , aFamixClassEntity mooseName printString
+]
+
+{ #category : 'as yet unclassified' }
 CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixFunctionEntity: aFamixFunctionEntity [
 	self
 		execute: [ self sourceFamixEntity: aFamixFunctionEntity.
 			fastModel allFASTTypeScriptFunctionDeclaration 
-				"select: [ :functionDeclaration | functionDeclaration parentNode isNil ] 
-				thenDo: [ :functionDeclaration | self halt . self accept: functionDeclaration ]."
-				do: [ :functionDeclaration | self halt . self accept: functionDeclaration ].
-				"(fastModel allWithType: FASTJavaInitializer) do: [ :functionDeclaration | self accept: functionDeclaration ]."
+				"In Java there is a check here to see if there is a parent for the function; I don't see whe we need it here."
+				 do: [ :functionDeclaration | self accept: functionDeclaration ]. 
 			fastModel metamodel: CRFTSModel metamodel ]
 		recordedAs: 'Bind ' , aFamixFunctionEntity mooseName printString
 ]
@@ -34,23 +43,23 @@ CRFTSBinderVisitor >> sourceFamixEntity: anObject [
 ]
 
 { #category : 'visiting' }
-CRFTSBinderVisitor >> visitFASTTypeScriptFunctionDeclaration: aFASTTypeScriptFunctionDeclaration [
+CRFTSBinderVisitor >> visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassDeclaration [
+  
+	"check if something on top pf it? Normally there is Program.
+	For example check Java"
 
-"	(aFASTTypeScriptFunctionDeclaration parentNode isNil and: [ aFASTTypeScriptFunctionDeclaration name = self sourceFamixEntity name ])
-		ifTrue: [ ""The current node is the root of the analysis"" self sourceFamixEntity fast: aFASTTypeScriptFunctionDeclaration ]
-		ifFalse: [ ""The method is declared inside the root, so we need to use the sourceAnchor to be sure of the binding""
-			((self sourceFamixEntity allToScope: FamixTFunction)
-				select: [ :method | 
-					method name = aFASTTypeScriptFunctionDeclaration name
-						and: [ method hasSourceAnchor
-								and: [ | sourceStartPos |
-									sourceStartPos := self sourceFamixEntityStartPo.
-									method sourceAnchor startPos - sourceStartPos <= (aFASTTypeScriptFunctionDeclaration startPos + 1)
-										and: [ method sourceAnchor endPos - sourceStartPos >= (aFASTTypeScriptFunctionDeclaration endPos - 1) ] ] ] ])
-				ifNotEmpty: [ :methodsWithCorrectName | (self sortCollection: methodsWithCorrectName byDistanceWith: aFASTTypeScriptFunctionDeclaration) first fast: aFASTTypeScriptFunctionDeclaration ] ].
-	aFASTTypeScriptFunctionDeclaration statements do: [ :statement | self accept: statement ].
-	aFASTTypeScriptFunctionDeclaration parameters do: [ :parameter | self accept: parameter ].
-	aFASTTypeScriptFunctionDeclaration typeParameters  do: [ :typeParameter | self accept: typeParameter ].	"
-		
+	self sourceFamixEntity fast: aFASTTypeScriptClassDeclaration.
+	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
+	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
+]
+
+{ #category : 'visiting' }
+CRFTSBinderVisitor >> visitFASTTypeScriptFunctionDeclaration: aFASTTypeScriptFunctionDeclaration [
+  
+	"check if something on top pf it? Normally there is Program.
+	For example check Java"
+
 	self sourceFamixEntity fast: aFASTTypeScriptFunctionDeclaration.
+	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
+	aFASTTypeScriptFunctionDeclaration parameters genericChildren do: [ :children | self accept: children ].
 ]
