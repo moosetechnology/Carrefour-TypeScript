@@ -41,6 +41,19 @@ CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixFunctionEntity: aFamixFu
 		recordedAs: 'Bind ' , aFamixFunctionEntity mooseName printString
 ]
 
+{ #category : 'as yet unclassified' }
+CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixInteraceEntity: aFamixInterfaceEntity [
+	self
+		execute: [ self sourceFamixEntity: aFamixInterfaceEntity.
+			fastModel allFASTTypeScriptInterfaceDeclaration 
+				"In Java there is a check here to see if there is a parent for the function; I don't see whe we need it here."
+				 do: [ :interfaceDeclaration | self accept: interfaceDeclaration ]. 
+			fastModel metamodel: CRFTSModel metamodel ]
+		recordedAs: 'Bind ' , aFamixInterfaceEntity mooseName printString
+
+	
+]
+
 { #category : 'accessing' }
 CRFTSBinderVisitor >> sourceFamixEntity [
 
@@ -84,4 +97,15 @@ CRFTSBinderVisitor >> visitFASTTypeScriptFunctionDeclaration: aFASTTypeScriptFun
 	self sourceFamixEntity fast: aFASTTypeScriptFunctionDeclaration.
 	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
 	aFASTTypeScriptFunctionDeclaration parameters genericChildren do: [ :children | self accept: children ].
+]
+
+{ #category : 'visiting' }
+CRFTSBinderVisitor >> visitFASTTypeScriptInterfaceDeclaration: aFASTTypeScriptInterfaceDeclaration [
+  
+	"check if something on top pf it? Normally there is Program.
+	For example check Java"
+
+	self sourceFamixEntity fast: aFASTTypeScriptInterfaceDeclaration.
+	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
+	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
 ]

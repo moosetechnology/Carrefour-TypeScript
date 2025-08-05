@@ -5,9 +5,11 @@ Class {
 		'famixFunction',
 		'famixClass',
 		'famixEnum',
+		'famixInterface',
 		'fastFunctionDeclaration',
 		'fastClassDeclaration',
-		'fastEnumDeclaration'
+		'fastEnumDeclaration',
+		'fastInterfaceDeclaration'
 	],
 	#category : 'Carrefour-TypeScript-Model-Generator',
 	#package : 'Carrefour-TypeScript-Model-Generator'
@@ -42,12 +44,15 @@ CRFTSMetamodelGenerator >> defineClasses [
 	famixClass := self remoteEntity: #Class withPrefix: #FamixTypeScript.	
 	famixFunction := self remoteEntity: #Function withPrefix: #FamixTypeScript.
 	famixEnum := self remoteEntity: #Enum withPrefix: #FamixTypeScript.
+	famixInterface := self remoteEntity: #Interface withPrefix: #FamixTypeScript.
 	
 	"FAST"
 	
 	fastClassDeclaration := self remoteEntity: #ClassDeclaration withPrefix: #FASTTypeScript.	
 	fastFunctionDeclaration := self remoteEntity: #FunctionDeclaration withPrefix: #FASTTypeScript.
 	fastEnumDeclaration := self remoteEntity: #EnumDeclaration withPrefix: #FASTTypeScript.
+	fastInterfaceDeclaration := self remoteEntity: #InterfaceDeclaration withPrefix: #FASTTypeScript.
+		
 
 	
 ]
@@ -60,4 +65,5 @@ CRFTSMetamodelGenerator >> defineRelations [
 	(famixClass property: #fast) - (fastClassDeclaration property: #famix).
 	(famixFunction property: #fast) - (fastFunctionDeclaration property: #famix).
 	(famixEnum property: #fast) - (fastEnumDeclaration property: #famix).
+	(famixInterface property: #fast) - (fastInterfaceDeclaration property: #famix).
 ]
