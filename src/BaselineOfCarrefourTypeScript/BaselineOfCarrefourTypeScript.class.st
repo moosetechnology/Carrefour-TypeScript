@@ -48,7 +48,7 @@ BaselineOfCarrefourTypeScript >> defineGroups: spec [
 
 	spec
 		group: 'core'
-		with: #( 'Carrefour-TypeScript-Model' 'Carrefour-TypeScript-Model-Generator' )
+		with: #( 'Carrefour-TypeScript-Model' 'Carrefour-TypeScript-Model-Generator' 'Carrefour-TypeScript-FastAndBindingGenerator')
 ]
 
 { #category : 'baselines' }
@@ -57,7 +57,8 @@ BaselineOfCarrefourTypeScript >> definePackages: spec [
 	spec
 		package: 'Carrefour-TypeScript-Model'
 		with: [ spec requires: #( 'FASTTypeScript' 'FamixTypeScript' ) ];
-		package: 'Carrefour-TypeScript-Model-Generator' .
+		package: 'Carrefour-TypeScript-Model-Generator';
+		package: 'Carrefour-TypeScript-FastAndBindingGenerator'.
 
 	"In case of no Famix loaded"
 	spec for: #NeedsMoose do: [
