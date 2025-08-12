@@ -1,6 +1,6 @@
 Class {
 	#name : 'CRFTSBinderCleaner',
-	#superclass : 'FASTCoreVisitor',
+	#superclass : 'FASTTypeScriptVisitor',
 	#category : 'Carrefour-TypeScript-FastAndBindingGenerator',
 	#package : 'Carrefour-TypeScript-FastAndBindingGenerator'
 }

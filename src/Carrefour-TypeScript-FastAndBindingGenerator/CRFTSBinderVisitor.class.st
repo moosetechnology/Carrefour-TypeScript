@@ -1,6 +1,6 @@
 Class {
 	#name : 'CRFTSBinderVisitor',
-	#superclass : 'FASTCoreVisitor',
+	#superclass : 'FASTTypeScriptVisitor',
 	#instVars : [
 		'sourceFamixEntity'
 	],
@@ -67,14 +67,28 @@ CRFTSBinderVisitor >> sourceFamixEntity: anObject [
 ]
 
 { #category : 'visiting' }
+CRFTSBinderVisitor >> visitFASTTypeScriptAssignmentExpression: aFASTTypeScriptAssignmentExpression [
+	
+	self halt.
+
+	"(self determineAttributeWithName: aFASTTypeScriptAssignmentExpression variable name from: aFASTTypeScriptAssignmentExpression)
+		ifNotNil:
+			[ :structuralEntity | structuralEntity fastAssignment add: aFASTTypeScriptAssignmentExpression ].
+	
+	super visitFASTTypeScriptAssignmentExpression: aFASTTypeScriptAssignmentExpression."
+]
+
+{ #category : 'visiting' }
 CRFTSBinderVisitor >> visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassDeclaration [
   
 	"check if something on top pf it? Normally there is Program.
 	For example check Java"
 
 	self sourceFamixEntity fast: aFASTTypeScriptClassDeclaration.
+	self halt.
 	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
 	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
+	super visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassDeclaration
 ]
 
 { #category : 'visiting' }

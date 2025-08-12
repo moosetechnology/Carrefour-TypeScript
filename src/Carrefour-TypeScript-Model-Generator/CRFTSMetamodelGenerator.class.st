@@ -6,10 +6,12 @@ Class {
 		'famixClass',
 		'famixEnum',
 		'famixInterface',
+		'famixStructuralEntity',
 		'fastFunctionDeclaration',
 		'fastClassDeclaration',
 		'fastEnumDeclaration',
-		'fastInterfaceDeclaration'
+		'fastInterfaceDeclaration',
+		'fastTypeScriptAssignmentExpression'
 	],
 	#category : 'Carrefour-TypeScript-Model-Generator',
 	#package : 'Carrefour-TypeScript-Model-Generator'
@@ -61,9 +63,14 @@ CRFTSMetamodelGenerator >> defineClasses [
 CRFTSMetamodelGenerator >> defineRelations [
 
 	super defineRelations.
-
+	
+	"We have tp think about programbecause it is the top of everything, except when there is an ERROR on top"
+	"Declarations on top"
 	(famixClass property: #fast) - (fastClassDeclaration property: #famix).
 	(famixFunction property: #fast) - (fastFunctionDeclaration property: #famix).
 	(famixEnum property: #fast) - (fastEnumDeclaration property: #famix).
 	(famixInterface property: #fast) - (fastInterfaceDeclaration property: #famix).
+	
+	"(famixStructuralEntity property: #fastAssignment) -* (fastTypeScriptAssignmentExpression property: #famixVariable)."
+	
 ]
