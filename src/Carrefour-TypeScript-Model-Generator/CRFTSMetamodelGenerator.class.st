@@ -47,6 +47,7 @@ CRFTSMetamodelGenerator >> defineClasses [
 	famixFunction := self remoteEntity: #Function withPrefix: #FamixTypeScript.
 	famixEnum := self remoteEntity: #Enum withPrefix: #FamixTypeScript.
 	famixInterface := self remoteEntity: #Interface withPrefix: #FamixTypeScript.
+	famixStructuralEntity := self remoteEntity: #StructuralEntity withPrefix: #FamixTypeScript.
 	
 	"FAST"
 	
@@ -54,6 +55,8 @@ CRFTSMetamodelGenerator >> defineClasses [
 	fastFunctionDeclaration := self remoteEntity: #FunctionDeclaration withPrefix: #FASTTypeScript.
 	fastEnumDeclaration := self remoteEntity: #EnumDeclaration withPrefix: #FASTTypeScript.
 	fastInterfaceDeclaration := self remoteEntity: #InterfaceDeclaration withPrefix: #FASTTypeScript.
+	fastTypeScriptAssignmentExpression := self remoteEntity: #AssignmentExpression withPrefix: #FASTTypeScript.
+	
 		
 
 	
@@ -71,6 +74,6 @@ CRFTSMetamodelGenerator >> defineRelations [
 	(famixEnum property: #fast) - (fastEnumDeclaration property: #famix).
 	(famixInterface property: #fast) - (fastInterfaceDeclaration property: #famix).
 	
-	"(famixStructuralEntity property: #fastAssignment) -* (fastTypeScriptAssignmentExpression property: #famixVariable)."
+	(famixStructuralEntity property: #fastAssignment) -* (fastTypeScriptAssignmentExpression property: #famixVariable).
 	
 ]
