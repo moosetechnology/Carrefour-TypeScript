@@ -82,9 +82,9 @@ CRFTSBinderVisitor >> determineAttributeWithName: aVariableName from: aFASTEntit
 					 (aFASTEntity atAnyScope: {FASTTypeScriptInterfaceDeclaration . FASTTypeScriptClassDeclaration}) anyOne
 						 famixTypeDefinition) ifNotNil: [ :found | ^ found ]."
 			
-			self sourceFamixEntity attributes
-				detect: [ :attribute | attribute name = aVariableName ]
-				ifFound: [ :attribute | ^ attribute ] ].
+			self sourceFamixEntity accesses 
+				detect: [ :access | access variable name = aVariableName ]
+				ifFound: [ :access | ^ access  ] ].
 	^ nil
 ]
 
@@ -144,14 +144,28 @@ CRFTSBinderVisitor >> sourceFamixEntity: anObject [
 
 { #category : 'visiting' }
 CRFTSBinderVisitor >> visitFASTTypeScriptAssignmentExpression: aFASTTypeScriptAssignmentExpression [
+
+	| attName |
+	((aFASTTypeScriptAssignmentExpression left isKindOf:
+		  FASTTypeScriptSubscriptExpression) or: [
+		 aFASTTypeScriptAssignmentExpression left isKindOf:
+			 FASTTypeScriptMemberExpression ])
+		ifTrue: [
+			attName := aFASTTypeScriptAssignmentExpression left object
+				           sourceCode ]
+		ifFalse: [
+		attName := aFASTTypeScriptAssignmentExpression left sourceCode ].
+
+	(self
+		 determineAttributeWithName: attName
+		 from: aFASTTypeScriptAssignmentExpression) ifNotNil: [
+		:structuralEntity | 
 	
-	self halt. 
-	
-	(self determineAttributeWithName: aFASTTypeScriptAssignmentExpression variable name from: aFASTTypeScriptAssignmentExpression)
-		ifNotNil:
-			[ :structuralEntity | structuralEntity fastAssignment add: aFASTTypeScriptAssignmentExpression ]. 
-	
-	super visitFASTTypeScriptAssignmentExpression: aFASTTypeScriptAssignmentExpression. 
+		structuralEntity fastAssignment:
+			aFASTTypeScriptAssignmentExpression. ].
+
+	super visitFASTTypeScriptAssignmentExpression:
+		aFASTTypeScriptAssignmentExpression
 ]
 
 { #category : 'visiting' }
@@ -163,6 +177,8 @@ CRFTSBinderVisitor >> visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassD
 	self sourceFamixEntity fast: aFASTTypeScriptClassDeclaration. 
 	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
 	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
+	self halt.
+	aFASTTypeScriptClassDeclaration body allChildren  do: [ :children | self accept: children ].
 	super visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassDeclaration
 ]
 
@@ -182,10 +198,12 @@ CRFTSBinderVisitor >> visitFASTTypeScriptFunctionDeclaration: aFASTTypeScriptFun
   
 	"check if something on top pf it? Normally there is Program.
 	For example check Java"
-
+	
 	self sourceFamixEntity fast: aFASTTypeScriptFunctionDeclaration.
 	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
 	aFASTTypeScriptFunctionDeclaration parameters genericChildren do: [ :children | self accept: children ].
+	"traverse body and access the assignments"
+	aFASTTypeScriptFunctionDeclaration body allChildren  do: [ :children | self accept: children ].
 ]
 
 { #category : 'visiting' }
