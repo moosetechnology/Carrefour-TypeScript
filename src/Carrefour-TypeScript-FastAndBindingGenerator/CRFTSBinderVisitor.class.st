@@ -55,6 +55,16 @@ CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixInteraceEntity: aFamixIn
 ]
 
 { #category : 'as yet unclassified' }
+CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixMethodEntity: aFamixMethodEntity [
+	self
+		execute: [ self sourceFamixEntity: aFamixMethodEntity.
+			fastModel allFASTTypeScriptMethodDefinition 
+				 do: [ :methodDeclaration | self accept: methodDeclaration ]. 
+			fastModel metamodel: CRFTSModel metamodel ]
+		recordedAs: 'Bind ' , aFamixMethodEntity mooseName printString
+]
+
+{ #category : 'as yet unclassified' }
 CRFTSBinderVisitor >> determineAttributeWithName: aVariableName from: aFASTEntity [
 
 	"I do a lookup for a variable in the famix code with the name = aVariableName 
@@ -178,7 +188,7 @@ CRFTSBinderVisitor >> visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassD
 	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
 	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
 	
-	aFASTTypeScriptClassDeclaration body allChildren  do: [ :children | self accept: children ].
+	"traverse all the relevant children " 
 	super visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassDeclaration
 ]
 
@@ -202,8 +212,11 @@ CRFTSBinderVisitor >> visitFASTTypeScriptFunctionDeclaration: aFASTTypeScriptFun
 	self sourceFamixEntity fast: aFASTTypeScriptFunctionDeclaration.
 	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
 	aFASTTypeScriptFunctionDeclaration parameters genericChildren do: [ :children | self accept: children ].
-	"traverse body and access the assignments"
-	aFASTTypeScriptFunctionDeclaration body allChildren  do: [ :children | self accept: children ].
+	
+	"traverse all the relevant children and including the assignments" 
+	super visitFASTTypeScriptFunctionDeclaration: aFASTTypeScriptFunctionDeclaration 
+	
+	
 ]
 
 { #category : 'visiting' }
@@ -215,4 +228,27 @@ CRFTSBinderVisitor >> visitFASTTypeScriptInterfaceDeclaration: aFASTTypeScriptIn
 	self sourceFamixEntity fast: aFASTTypeScriptInterfaceDeclaration.
 	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
 	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
+]
+
+{ #category : 'visiting' }
+CRFTSBinderVisitor >> visitFASTTypeScriptMethodDefinition: aFASTTypeScriptMethodDefinition [
+	"check if something on top pf it? Normally there is Program.
+	For example check Java"
+
+	((self sourceFamixEntity allToScope: FamixTMethod) select: [ :method |
+		 method name = aFASTTypeScriptMethodDefinition name sourceCode and: [
+			 method hasSourceAnchor and: [
+				 method sourceAnchor startPos
+				 = aFASTTypeScriptMethodDefinition startPos ] ] ]) ifNotEmpty: [
+		:methodsWithCorrectName |
+		methodsWithCorrectName asOrderedCollection first fast:
+			aFASTTypeScriptMethodDefinition ].
+
+	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
+	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
+
+	"aFASTTypeScriptMethodDefinition body allChildren  do: [ :children | self accept: children ]."
+	
+	super visitFASTTypeScriptMethodDefinition:
+		aFASTTypeScriptMethodDefinition
 ]
