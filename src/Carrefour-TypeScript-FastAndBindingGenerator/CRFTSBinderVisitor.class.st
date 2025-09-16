@@ -177,7 +177,7 @@ CRFTSBinderVisitor >> visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassD
 	self sourceFamixEntity fast: aFASTTypeScriptClassDeclaration. 
 	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
 	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
-	self halt.
+	
 	aFASTTypeScriptClassDeclaration body allChildren  do: [ :children | self accept: children ].
 	super visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassDeclaration
 ]
