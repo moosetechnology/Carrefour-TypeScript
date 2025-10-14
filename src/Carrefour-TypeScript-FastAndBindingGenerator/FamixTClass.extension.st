@@ -6,6 +6,12 @@ FamixTClass >> bindFastModel: fastModel usingBinder: binder [
 ]
 
 { #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
+FamixTClass >> ensureCleanBinding [
+	self fast ifNotEmpty: [ :decl | decl anyOne rootNode fullClean ].
+	self fast ifNotEmpty: [ :decl | decl anyOne rootNode fullClean ].
+]
+
+{ #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
 FamixTClass >> generateFastAndBind [
 
 	| fastModel |
