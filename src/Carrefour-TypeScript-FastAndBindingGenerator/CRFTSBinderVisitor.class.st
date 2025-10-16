@@ -180,19 +180,22 @@ CRFTSBinderVisitor >> visitFASTTypeScriptAssignmentExpression: aFASTTypeScriptAs
 CRFTSBinderVisitor >> visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassDeclaration [
 
 	| collector famixClass |
-	"Filter classes in famixSourceEntity (if famixSourceEntity itself is not a class) and find the correspondant famixClass"
+	"1- Filter classes in famixSourceEntity (if famixSourceEntity itself is not a class) and find the correspondant famixClass"
 	collector := CRFTSBinderCollector new.
 	famixClass := collector
 		              collectClass:
 		              aFASTTypeScriptClassDeclaration name sourceCode
 		              from: self sourceFamixEntity.
 
-	"link the fastClassDeclaration to the found famix class"
+	"2- link the fastClassDeclaration to the found famix class"
 
 	famixClass ifNotNil: [
 		aFASTTypeScriptClassDeclaration famix: famixClass ].
 
-	"traverse all the relevant children "
+	"3- Link my entities"
+	"Class entities are: body and name; I don't find a reason for linking them. For sure we have to link what we find inside ClassBody: fields, methods ..."
+
+	"4- Visit the rest of the tree "
 	super visitFASTTypeScriptClassDeclaration:
 		aFASTTypeScriptClassDeclaration
 ]
