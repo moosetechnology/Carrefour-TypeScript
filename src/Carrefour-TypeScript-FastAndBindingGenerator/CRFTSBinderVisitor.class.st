@@ -156,23 +156,21 @@ CRFTSBinderVisitor >> sourceFamixEntity: anObject [
 CRFTSBinderVisitor >> visitFASTTypeScriptAssignmentExpression: aFASTTypeScriptAssignmentExpression [
 
 	| attName |
-	((aFASTTypeScriptAssignmentExpression left isKindOf:
-		  FASTTypeScriptSubscriptExpression) or: [
-		 aFASTTypeScriptAssignmentExpression left isKindOf:
-			 FASTTypeScriptMemberExpression ])
-		ifTrue: [
-			attName := aFASTTypeScriptAssignmentExpression left object
-				           sourceCode ]
-		ifFalse: [
-		attName := aFASTTypeScriptAssignmentExpression left sourceCode ].
+	attName := ((aFASTTypeScriptAssignmentExpression left isKindOf:
+		             FASTTypeScriptSubscriptExpression) or: [
+		            aFASTTypeScriptAssignmentExpression left isKindOf:
+			            FASTTypeScriptMemberExpression ])
+		           ifTrue: [
+		           aFASTTypeScriptAssignmentExpression left object
+			           sourceCode ]
+		           ifFalse: [
+		           aFASTTypeScriptAssignmentExpression left sourceCode ].
 
 	(self
 		 determineAttributeWithName: attName
 		 from: aFASTTypeScriptAssignmentExpression) ifNotNil: [
-		:structuralEntity | 
-	
-		structuralEntity fastAssignment:
-			aFASTTypeScriptAssignmentExpression. ].
+		:structuralEntity |
+		structuralEntity fastAssignment: aFASTTypeScriptAssignmentExpression ].
 
 	super visitFASTTypeScriptAssignmentExpression:
 		aFASTTypeScriptAssignmentExpression
@@ -180,16 +178,23 @@ CRFTSBinderVisitor >> visitFASTTypeScriptAssignmentExpression: aFASTTypeScriptAs
 
 { #category : 'visiting' }
 CRFTSBinderVisitor >> visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassDeclaration [
-  
-	"check if something on top pf it? Normally there is Program.
-	For example check Java"
 
-	self sourceFamixEntity fast: aFASTTypeScriptClassDeclaration. 
-	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
-	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
-	
-	"traverse all the relevant children " 
-	super visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassDeclaration
+	| collector famixClass |
+	"Filter classes in famixSourceEntity (if famixSourceEntity itself is not a class) and find the correspondant famixClass"
+	collector := CRFTSBinderCollector new.
+	famixClass := collector
+		              collectClass:
+		              aFASTTypeScriptClassDeclaration name sourceCode
+		              from: self sourceFamixEntity.
+
+	"link the fastClassDeclaration to the found famix class"
+
+	famixClass ifNotNil: [
+		aFASTTypeScriptClassDeclaration famix: famixClass ].
+
+	"traverse all the relevant children "
+	super visitFASTTypeScriptClassDeclaration:
+		aFASTTypeScriptClassDeclaration
 ]
 
 { #category : 'visiting' }
