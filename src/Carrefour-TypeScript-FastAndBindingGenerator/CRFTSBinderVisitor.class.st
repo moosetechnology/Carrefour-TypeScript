@@ -202,13 +202,27 @@ CRFTSBinderVisitor >> visitFASTTypeScriptClassDeclaration: aFASTTypeScriptClassD
 
 { #category : 'visiting' }
 CRFTSBinderVisitor >> visitFASTTypeScriptEnumDeclaration: aFASTTypeScriptEnumDeclaration [
-  
-	"check if something on top pf it? Normally there is Program.
-	For example check Java"
+	
+	| collector famixEnum |
+	"1- Filter Enums in famixSourceEntity (if famixSourceEntity itself is not an enum) and find the correspondant famixEnum"
+	
+	collector := CRFTSBinderCollector new.
+	famixEnum := collector
+		              collectEnum:
+		              aFASTTypeScriptEnumDeclaration name sourceCode
+		              from: self sourceFamixEntity.
+		
+	"2- link the fastEnumDeclaration to the found famix enum"
 
-	self sourceFamixEntity fast: aFASTTypeScriptEnumDeclaration.
-	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
-	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
+	famixEnum ifNotNil: [
+		aFASTTypeScriptEnumDeclaration famix: famixEnum ].
+	
+	"3- Link my entities"
+	"Enum entities are: body and name; I don't find a reason for linking them. For sure we have to link what we find inside EnumBody: propertyIdentifier"
+
+   "4- Visit the rest of the tree "
+	super visitFASTTypeScriptEnumDeclaration:
+		aFASTTypeScriptEnumDeclaration
 ]
 
 { #category : 'visiting' }

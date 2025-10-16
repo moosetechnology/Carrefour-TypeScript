@@ -19,3 +19,15 @@ CRFTSBinderCollector >> collectClass: fastClassName from: famixEntity [
 		ifNone: [ nil ]
 
 ]
+
+{ #category : 'as yet unclassified' }
+CRFTSBinderCollector >> collectEnum: fastEnumName from: famixEntity [
+
+	(famixEntity class = FamixTypeScriptEnum and: [
+		 famixEntity name = fastEnumName ]) ifTrue: [ ^ famixEntity ].
+
+	^ (famixEntity allToScope: FamixTEnum )
+		  detect: [ :class |
+			  class isAnonymousClass not and: [ class name = fastEnumName ] ]
+		  ifNone: [ nil ]
+]
