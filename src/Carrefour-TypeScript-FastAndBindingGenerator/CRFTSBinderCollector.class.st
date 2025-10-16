@@ -26,8 +26,20 @@ CRFTSBinderCollector >> collectEnum: fastEnumName from: famixEntity [
 	(famixEntity class = FamixTypeScriptEnum and: [
 		 famixEntity name = fastEnumName ]) ifTrue: [ ^ famixEntity ].
 
-	^ (famixEntity allToScope: FamixTEnum )
-		  detect: [ :class |
-			  class isAnonymousClass not and: [ class name = fastEnumName ] ]
+	^ (famixEntity allToScope: FamixTEnum)
+		  detect: [ :enum |
+			  enum isAnonymous not and: [ enum name = fastEnumName ] ]
+		  ifNone: [ nil ]
+]
+
+{ #category : 'as yet unclassified' }
+CRFTSBinderCollector >> collectFunction: fastFunctionName from: famixEntity [
+
+	(famixEntity class = FamixTypeScriptFunction and: [
+		 famixEntity name = fastFunctionName ]) ifTrue: [ ^ famixEntity ].
+
+	^ (famixEntity allToScope: FamixTFunction )
+		  detect: [ :function |
+			  function isAnonymous not and: [ function name = fastFunctionName ] ]
 		  ifNone: [ nil ]
 ]

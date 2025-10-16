@@ -227,18 +227,25 @@ CRFTSBinderVisitor >> visitFASTTypeScriptEnumDeclaration: aFASTTypeScriptEnumDec
 
 { #category : 'visiting' }
 CRFTSBinderVisitor >> visitFASTTypeScriptFunctionDeclaration: aFASTTypeScriptFunctionDeclaration [
-  
-	"check if something on top pf it? Normally there is Program.
-	For example check Java"
 	
-	self sourceFamixEntity fast: aFASTTypeScriptFunctionDeclaration.
-	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
-	aFASTTypeScriptFunctionDeclaration parameters genericChildren do: [ :children | self accept: children ].
-	
-	"traverse all the relevant children and including the assignments" 
-	super visitFASTTypeScriptFunctionDeclaration: aFASTTypeScriptFunctionDeclaration 
-	
-	
+	| collector famixFunction |
+	"1- Filter functions in famixSourceEntity (if famixSourceEntity itself is not a function) and find the correspondant famixFunction"
+	collector := CRFTSBinderCollector new.
+	famixFunction := collector
+		              collectFunction:
+		              aFASTTypeScriptFunctionDeclaration name sourceCode
+		              from: self sourceFamixEntity. 
+		
+	"2- link the fastFunctionDeclaration to the found famix function"
+	famixFunction ifNotNil: [
+		aFASTTypeScriptFunctionDeclaration famix: famixFunction ]. 
+	 
+	"3- Link my entities"
+	"Function entities are: body, name, parameters and return_type; I think what should be linked is what is inside the body (and perhaps parametrs ? not sure ... upcoming days will show us"
+
+	"4- Visit the rest of the tree "
+	super visitFASTTypeScriptFunctionDeclaration:
+		aFASTTypeScriptFunctionDeclaration
 ]
 
 { #category : 'visiting' }
