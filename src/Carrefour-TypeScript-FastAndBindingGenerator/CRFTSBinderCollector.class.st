@@ -5,7 +5,7 @@ Class {
 	#package : 'Carrefour-TypeScript-FastAndBindingGenerator'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'detecting' }
 CRFTSBinderCollector >> collectClass: fastClassName from: famixEntity [
  
 	(famixEntity class = FamixTypeScriptClass 
@@ -20,7 +20,7 @@ CRFTSBinderCollector >> collectClass: fastClassName from: famixEntity [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'detecting' }
 CRFTSBinderCollector >> collectEnum: fastEnumName from: famixEntity [
 
 	(famixEntity class = FamixTypeScriptEnum and: [
@@ -32,7 +32,7 @@ CRFTSBinderCollector >> collectEnum: fastEnumName from: famixEntity [
 		  ifNone: [ nil ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'detecting' }
 CRFTSBinderCollector >> collectFunction: fastFunctionName from: famixEntity [
 
 	(famixEntity class = FamixTypeScriptFunction and: [
@@ -44,7 +44,7 @@ CRFTSBinderCollector >> collectFunction: fastFunctionName from: famixEntity [
 		  ifNone: [ nil ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'detecting' }
 CRFTSBinderCollector >> collectInterface: fastInterfaceName from: famixEntity [
 
 	(famixEntity class = FamixTypeScriptInterface and: [
