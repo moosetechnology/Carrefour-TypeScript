@@ -275,23 +275,24 @@ CRFTSBinderVisitor >> visitFASTTypeScriptInterfaceDeclaration: aFASTTypeScriptIn
 
 { #category : 'visiting' }
 CRFTSBinderVisitor >> visitFASTTypeScriptMethodDefinition: aFASTTypeScriptMethodDefinition [
-	"check if something on top pf it? Normally there is Program.
-	For example check Java"
-
-	((self sourceFamixEntity allToScope: FamixTMethod) select: [ :method |
-		 method name = aFASTTypeScriptMethodDefinition name sourceCode and: [
-			 method hasSourceAnchor and: [
-				 method sourceAnchor startPos
-				 = aFASTTypeScriptMethodDefinition startPos ] ] ]) ifNotEmpty: [
-		:methodsWithCorrectName |
-		methodsWithCorrectName asOrderedCollection first fast:
-			aFASTTypeScriptMethodDefinition ].
-
-	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
-	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
-
-	"aFASTTypeScriptMethodDefinition body allChildren  do: [ :children | self accept: children ]."
 	
+	| collector famixMethod |
+	"1- Filter classes in famixSourceEntity (if famixSourceEntity itself is not a class) and find the correspondant famixClass"
+	collector := CRFTSBinderCollector new.
+	famixMethod := collector
+		              collectMethod:
+		              aFASTTypeScriptMethodDefinition
+		              from: self sourceFamixEntity.
+
+	"2- link the fastClassDeclaration to the found famix class"
+
+	famixMethod ifNotNil: [
+		aFASTTypeScriptMethodDefinition famix: famixMethod ].
+	
+	"3- Link my entities"
+	"Method entities are: "
+	
+	"4- Visit the rest of the tree "
 	super visitFASTTypeScriptMethodDefinition:
 		aFASTTypeScriptMethodDefinition
 ]

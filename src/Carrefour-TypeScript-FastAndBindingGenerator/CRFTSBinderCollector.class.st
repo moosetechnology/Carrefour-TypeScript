@@ -55,3 +55,23 @@ CRFTSBinderCollector >> collectInterface: fastInterfaceName from: famixEntity [
 			  class isAnonymous not and: [ class name = fastInterfaceName ] ]
 		  ifNone: [ nil ]
 ]
+
+{ #category : 'detecting' }
+CRFTSBinderCollector >> collectMethod: fastMethod from: famixEntity [
+
+	| isSameMethod |
+	isSameMethod := [ :aMethod |
+	                aMethod name = fastMethod name sourceCode and: [
+		                aMethod hasSourceAnchor 
+			and: [
+			                aMethod sourceText trimmed = fastMethod sourceCode trimmed ] ] ].
+
+	"Check if the entity itself matches"
+	famixEntity class = FamixTMethod ifTrue: [
+		(isSameMethod value: famixEntity) ifTrue: [ ^ famixEntity ] ].
+
+	"Otherwise, search among all methods in scope"
+	^ (famixEntity allToScope: FamixTMethod)
+		  detect: [ :method | isSameMethod value: method ]
+		  ifNone: [ nil ]
+]
