@@ -43,3 +43,15 @@ CRFTSBinderCollector >> collectFunction: fastFunctionName from: famixEntity [
 			  function isAnonymous not and: [ function name = fastFunctionName ] ]
 		  ifNone: [ nil ]
 ]
+
+{ #category : 'as yet unclassified' }
+CRFTSBinderCollector >> collectInterface: fastInterfaceName from: famixEntity [
+
+	(famixEntity class = FamixTypeScriptInterface and: [
+		 famixEntity name = fastInterfaceName ]) ifTrue: [ ^ famixEntity ].
+
+	^ (famixEntity allToScope: FamixTInheritance)
+		  detect: [ :class |
+			  class isAnonymous not and: [ class name = fastInterfaceName ] ]
+		  ifNone: [ nil ]
+]

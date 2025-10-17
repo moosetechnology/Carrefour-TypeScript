@@ -250,13 +250,27 @@ CRFTSBinderVisitor >> visitFASTTypeScriptFunctionDeclaration: aFASTTypeScriptFun
 
 { #category : 'visiting' }
 CRFTSBinderVisitor >> visitFASTTypeScriptInterfaceDeclaration: aFASTTypeScriptInterfaceDeclaration [
-  
-	"check if something on top pf it? Normally there is Program.
-	For example check Java"
 
-	self sourceFamixEntity fast: aFASTTypeScriptInterfaceDeclaration.
-	"this needs more elaboration: perhaps a visitor is required for the FASTTypeScriptRequiredParameter which is the type for genericChildren"
-	"aFASTTypeScriptClassDeclaration parameters genericChildren do: [ :children | self accept: children ]."
+	| collector famixInterface |
+	"1- Filter interfaces in famixSourceEntity (if famixSourceEntity itself is not an interface) and find the correspondant famixInterface"
+	collector := CRFTSBinderCollector new.
+	famixInterface := collector
+		                  collectInterface:
+		                  aFASTTypeScriptInterfaceDeclaration name
+			                  sourceCode
+		                  from: self sourceFamixEntity.
+	
+	"2- link the famixInterface to the found famix interface"
+
+	famixInterface ifNotNil: [
+		aFASTTypeScriptInterfaceDeclaration famix: famixInterface ].	
+	
+	"3- Link my entities"
+	"Interface entities are: body and name; I don't find a reason for linking them. perhaps we have to link what we find inside InterfaceBody ..."
+
+	"4- Visit the rest of the tree "
+	super visitFASTTypeScriptInterfaceDeclaration:
+		aFASTTypeScriptInterfaceDeclaration.
 ]
 
 { #category : 'visiting' }
