@@ -7,17 +7,14 @@ Class {
 
 { #category : 'detecting' }
 CRFTSBinderCollector >> collectClass: fastClassName from: famixEntity [
- 
-	(famixEntity class = FamixTypeScriptClass 
-		and: [ famixEntity name = fastClassName ])
-		ifTrue: [ ^ famixEntity ].
+
+	(famixEntity class = FamixTypeScriptClass and: [
+		 famixEntity name = fastClassName ]) ifTrue: [ ^ famixEntity ].
 
 	^ (famixEntity allToScope: FamixTClass)
-		detect: [ :class | 
-			class isAnonymousClass not 
-				and: [ class name = fastClassName ] ]
-		ifNone: [ nil ]
-
+		  detect: [ :class |
+			   class name = fastClassName  ]
+		  ifNone: [ nil ]
 ]
 
 { #category : 'detecting' }
@@ -28,7 +25,7 @@ CRFTSBinderCollector >> collectEnum: fastEnumName from: famixEntity [
 
 	^ (famixEntity allToScope: FamixTEnum)
 		  detect: [ :enum |
-			  enum isAnonymous not and: [ enum name = fastEnumName ] ]
+		   enum name = fastEnumName  ]
 		  ifNone: [ nil ]
 ]
 
@@ -38,9 +35,9 @@ CRFTSBinderCollector >> collectFunction: fastFunctionName from: famixEntity [
 	(famixEntity class = FamixTypeScriptFunction and: [
 		 famixEntity name = fastFunctionName ]) ifTrue: [ ^ famixEntity ].
 
-	^ (famixEntity allToScope: FamixTFunction )
+	^ (famixEntity allToScope: FamixTFunction)
 		  detect: [ :function |
-			  function isAnonymous not and: [ function name = fastFunctionName ] ]
+			   function name = fastFunctionName  ]
 		  ifNone: [ nil ]
 ]
 
@@ -52,7 +49,7 @@ CRFTSBinderCollector >> collectInterface: fastInterfaceName from: famixEntity [
 
 	^ (famixEntity allToScope: FamixTInheritance)
 		  detect: [ :class |
-			  class isAnonymous not and: [ class name = fastInterfaceName ] ]
+			   class name = fastInterfaceName  ]
 		  ifNone: [ nil ]
 ]
 
