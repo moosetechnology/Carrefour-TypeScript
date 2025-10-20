@@ -46,11 +46,10 @@ CRFTSBinderCleaner >> visitFASTTypeScriptFunctionDeclaration: aFASTTypeScriptFun
 
 { #category : 'visiting' }
 CRFTSBinderCleaner >> visitFASTTypeScriptInterfaceDeclaration: aFASTTypeScriptInterfaceDeclaration [
-	aFASTTypeScriptInterfaceDeclaration famix: nil.
-		
-	self flag: 'to be changed'.
-	^ super visitFASTTEntity: aFASTTypeScriptInterfaceDeclaration.
-	"^ super visitFASTTypeScriptInterfaceDeclaration: aFASTTypeScriptInterfaceDeclaration"
+
+	aFASTTypeScriptInterfaceDeclaration famix: nil. 
+	^ super visitFASTTypeScriptInterfaceDeclaration: aFASTTypeScriptInterfaceDeclaration
+	 
 ]
 
 { #category : 'visiting' }
