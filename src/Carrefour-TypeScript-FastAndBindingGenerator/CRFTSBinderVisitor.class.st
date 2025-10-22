@@ -42,7 +42,7 @@ CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixFunctionEntity: aFamixFu
 ]
 
 { #category : 'as yet unclassified' }
-CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixInteraceEntity: aFamixInterfaceEntity [
+CRFTSBinderVisitor >> bindFastModel: fastModel fromFamixInterfaceEntity: aFamixInterfaceEntity [
 	self
 		execute: [ self sourceFamixEntity: aFamixInterfaceEntity.
 			fastModel allFASTTypeScriptInterfaceDeclaration 

@@ -1,13 +1,13 @@
-Extension { #name : 'FamixTImplementable' }
+Extension { #name : 'FamixTypeScriptClass' }
 
 { #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
-FamixTImplementable >> bindFastModel: fastModel usingBinder: binder [
-	binder bindFastModel: fastModel fromFamixInteraceEntity: self 
-	
+FamixTypeScriptClass >> bindFastModel: fastModel usingBinder: binder [
+
+	binder bindFastModel: fastModel fromFamixClassEntity: self
 ]
 
 { #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
-FamixTImplementable >> generateFastAndBind [
+FamixTypeScriptClass >> generateFastAndBind [
 
 	| fastModel |
 	self assert: self sourceAnchor isNotNil.
@@ -19,7 +19,8 @@ FamixTImplementable >> generateFastAndBind [
 ]
 
 { #category : '*Carrefour-TypeScript-FastAndBindingGenerator' }
-FamixTImplementable >> getFASTModel [
+FamixTypeScriptClass >> getFASTModel [
 
-	^ FASTTypeScriptParser new parse: self sourceAnchor sourceText
+	^ FASTTypeScriptParser new parse: self sourceAnchor sourceText 
+	
 ]
