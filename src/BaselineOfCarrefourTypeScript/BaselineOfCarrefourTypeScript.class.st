@@ -34,12 +34,12 @@ BaselineOfCarrefourTypeScript >> defineDependencies: spec [
 	spec baseline: 'FASTTypeScript' with: [
 		spec
 			loads: #( 'default' );
-			repository: 'github://moosetechnology/FASTTypescript:main' ].
+			repository: 'github://moosetechnology/FASTTypescript:dev' ].
 
 	spec baseline: 'FamixTypeScript' with: [
 		spec
 			loads: #( 'default' );
-			repository: 'github://evref-bl/FamixTypeScript:dev/src' ]
+			repository: 'github://evref-bl/FamixTypeScript:main/src' ]
 ]
 
 { #category : 'baselines' }
